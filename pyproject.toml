@@ -1,0 +1,12 @@
+[project]
+name = "goose4j-memory"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+  "mcp[cli]",
+  "neo4j",
+  "requests",
+]
+
+[project.scripts]
+goose4j-memory = "goose4j_memory.__main__:main"
