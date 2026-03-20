@@ -1,3 +1,4 @@
+import re
 import uuid
 from typing import Any
 
@@ -68,7 +69,7 @@ def store_memory(
         }
 
     novelty = novelty_from_similarity(max_sim)
-    q = quality_evaluate(text, novelty)
+    q = quality_evaluate(text, novelty, memory_type)
 
     if not q["pass"]:
         return {
@@ -167,9 +168,12 @@ def retrieve_memory(
     if memory_type is not None:
         memory_type = memory_type.strip().lower()
         if memory_type not in VALID_MEMORY_TYPES:
-            raise ValueError(
-                f"Invalid memory_type '{memory_type}'. Must be one of {sorted(VALID_MEMORY_TYPES)}"
-            )
+            return [
+                {
+                    "status": "error",
+                    "message": f"Invalid memory_type '{memory_type}'. Must be one of: {', '.join(sorted(VALID_MEMORY_TYPES))}",
+                }
+            ]
 
     embedding = embed(query)
 
